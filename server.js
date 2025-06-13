@@ -36,6 +36,9 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+const PORT = process.env.PORT || 3000;    // ← 여기가 바뀌었습니다!
+...
 app.listen(PORT, () => {
-  console.log(`✅ 서버 실행 중: http://localhost:${PORT}`);
+  console.log(`✅ 서버 실행 중 포트: ${PORT}`);
 });
+
