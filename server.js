@@ -1,4 +1,5 @@
 require("dotenv").config();
+const PORT = process.env.PORT || 3000;
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
@@ -23,7 +24,7 @@ app.post("/api/chat", async (req, res) => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          Authorization: Bearer ${process.env.OPENAI_API_KEY},
         },
       }
     );
@@ -36,9 +37,6 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;    // ← 여기가 바뀌었습니다!
-...
 app.listen(PORT, () => {
-  console.log(`✅ 서버 실행 중 포트: ${PORT}`);
+  console.log(✅ 서버 실행 중: http://localhost:${PORT});
 });
-
