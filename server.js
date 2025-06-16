@@ -56,7 +56,7 @@ app.post("/api/chat", async (req, res) => {
   const userMessage = req.body.message;
 
   // ① 사용자 메시지에서 선생님 이름 찾기
-  for (const [name, room] of Object.entries(teacherRooms)) {
+  for (const [name, room] of Object.entries(teacherLocations)) {
     if (userMessage.includes(name)) {
       return res.json({ reply: `${name} 선생님의 교무실은 ${room}입니다.` });
     }
