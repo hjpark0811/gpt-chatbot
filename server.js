@@ -182,7 +182,6 @@ app.post("/api/chat", async (req, res) => {
     }
   }
 
-  // 3. GPT 기본 응답
   try {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
@@ -197,14 +196,23 @@ app.post("/api/chat", async (req, res) => {
         },
       }
     );
+
     const reply = response.data.choices[0].message.content;
+
+    // ✅ 콘솔에 이용 기록 로그 출력
+    console.log("🗨️ 이용 기록 ==================");
+    console.log("📅 시간:", new Date().toLocaleString());
+    console.log("🙋 사용자:", userMessage);
+    console.log("🤖 챗봇 응답:", reply);
+    console.log("================================\n");
+
     res.json({ reply });
   } catch (error) {
-    console.error("GPT 호출 오류:", error.response?.data || error.message);
+    console.error("❌ GPT 호출 오류:", error.response?.data || error.message);
     res.status(500).json({ error: "GPT 응답 실패" });
   }
 });
 
 app.listen(PORT, () => {
   console.log(`✅ 서버 실행 중: http://localhost:${PORT}`);
-})
+});
