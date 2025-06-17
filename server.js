@@ -164,18 +164,23 @@ const subjectTeacherMap = {
 app.post("/api/chat", async (req, res) => {
   const userMessage = req.body.message.trim();
 
-  // 교사 이름으로 위치 알려주기
-  if (teacherLocationMap[userMessage]) {
-    return res.json({ reply: `${userMessage} 선생님의 교무실 위치는 ${teacherLocationMap[userMessage]}입니다.` });
+  // 1. 교사 이름이 포함되어 있는지 검사
+  for (const teacher of Object.keys(teacherLocationMap)) {
+    if (userMessage.includes(teacher)) {
+      const location = teacherLocationMap[teacher];
+      return res.json({ reply: `${teacher} 선생님의 교무실 위치는 ${location}입니다.` });
+    }
   }
 
-  // 과목명으로 교사 이름 알려주기
-  if (subjectTeacherMap[userMessage]) {
-    const teachers = subjectTeacherMap[userMessage].join(", ");
-    return res.json({ reply: `“${userMessage}” 과목의 담당 선생님은 ${teachers} 선생님입니다.` });
+  // 2. 과목명이 포함되어 있는지 검사
+  for (const subject of Object.keys(subjectTeacherMap)) {
+    if (userMessage.includes(subject)) {
+      const teachers = subjectTeacherMap[subject].join(", ");
+      return res.json({ reply: `“${subject}” 과목의 담당 선생님은 ${teachers} 선생님입니다.` });
+    }
   }
 
-  // 일반 GPT 응답
+  // 3. GPT 기본 응답
   try {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
@@ -200,4 +205,4 @@ app.post("/api/chat", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`✅ 서버 실행 중: http://localhost:${PORT}`);
-});
+})
